@@ -1,35 +1,21 @@
 
 
-const User = require('./Person');
+const router = require('express').Router();
 
-const Post = require('./New');
+const apiStuff = require('./api');
 
-const Comment = require('./Scribble');
+const homeStuff = require('./h-route.js');
 
-//this relates things together
+const dshbrdStuff = require('./d-route.js');
 
-Person.hasMany(Post, {
-    foreignKey: 'user_id'
+
+router.use('/api', apiStuff);
+router.use('/', homeStuff);
+router.use('/dashboard', dshbrdStuff);
+
+router.use((req, res) => {
+    
+  res.status(404).end();
 });
 
-Post.belongsTo(User, {
-    foreignKey: 'user_id',
-});
-
-Scribble.belongsTo(User, {
-    foreignKey: 'user_id'
-  });
-  
-Scribble.belongsTo(Post, {
-    foreignKey: 'post_id'
-});
-  
-Person.hasMany(Comment, {
-    foreignKey: 'user_id'
-});
-  
-New.hasMany(Comment, {
-    foreignKey: 'post_id'
-});
-
-module.exports = {Person, New, Scribble};
+module.exports = router;
